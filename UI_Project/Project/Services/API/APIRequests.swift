@@ -132,7 +132,7 @@ final class APIRequest {
         
         let method = "/newsfeed.get"
         let parameters: Parameters = [
-            "filters": "post",
+            "filters": "post, photo",
             "count": 50,
             "access_token": token,
             "v": version]

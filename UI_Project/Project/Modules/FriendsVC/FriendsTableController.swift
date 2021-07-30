@@ -30,7 +30,7 @@ class FriendsTableController: UITableViewController, UISearchBarDelegate {
                 switch changes {
                 case .initial:
                     print("INITIAL")
-                    print(changes)
+//                    print(changes)
                 case .update:
                     tableView.reloadData()
                 case .error(let error):

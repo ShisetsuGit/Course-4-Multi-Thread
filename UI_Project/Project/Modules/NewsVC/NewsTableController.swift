@@ -25,7 +25,7 @@ class NewsTableController: UITableViewController {
                 switch changes {
                 case .initial:
                     print("INITIAL")
-                    print(changes)
+                //                    print(changes)
                 case .update:
                     tableView.reloadData()
                 case .error(let error):
@@ -42,7 +42,7 @@ class NewsTableController: UITableViewController {
                 switch changes {
                 case .initial:
                     print("INITIAL")
-                    print(changes)
+                //                    print(changes)
                 case .update:
                     tableView.reloadData()
                 case .error(let error):
@@ -52,51 +52,61 @@ class NewsTableController: UITableViewController {
             }
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         newsRequest.getNews()
         news = newsDB.readResults()
         newsGroups = newsGroupsDB.readResults()
     }
-
-
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return news!.count
         return news!.count
     }
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "News", for: indexPath)  as! NewsViewCell
         
-        let news = news![indexPath.row]
+        let newsData = news![indexPath.row]
+        groups = self.newsGroupsDB.readById(id: newsData.sourceId)
         
-        groups = self.newsGroupsDB.readById(id: news.sourceId)
+        var cellID = String()
         
-        print("groups")
-        print(groups)
-        
-        cell.groupName.text = groups[0].name
-        imageCache(url: groups[0].photo50!) { image in
-            cell.groupAvatar.image = image
+        if newsData.text == "" {
+            cellID = "photoCell"
+        } else {
+            cellID = "postCell"
         }
-        cell.newsText.text = news.text
-        cell.likes.text = "\(news.likes)"
-        cell.reposts.text = "\(news.reposts)"
-        cell.views.text = "\(news.views)"
-        cell.comments.text = "\(news.comments)"
         
-        imageCache(url: news.photo!) { image in
+        let cell = tableView.dequeueReusableCell(withIdentifier: "\(cellID)", for: indexPath)  as! PostViewCell
+
+        cell.profileName.text = groups[0].name
+        imageCache(url: groups[0].photo50!) { image in
+            cell.profilePhoto.image = image
+        }
+        
+        cell.profilePhoto.clipsToBounds = true
+        cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height / 2
+        
+        imageCache(url: newsData.photo!) { image in
             cell.newsPhoto.image = image
         }
-        
-        
         cell.newsPhoto.contentMode = .scaleToFill
-        cell.groupAvatar.clipsToBounds = true
-        cell.groupAvatar.layer.cornerRadius = cell.groupAvatar.frame.height / 2
-
+        
+        if cellID == "postCell" {
+            cell.newsText.text = newsData.text
+        }
+        
+        cell.likesCount.text = "\(newsData.likes)"
+        cell.repostsCount.text = "\(newsData.reposts)"
+        cell.viewsCount.text = "\(newsData.views)"
+        cell.commensCount.text = "\(newsData.comments)"
+        
+        cell.selectionStyle = .none
+        
         return cell
+        
     }
-
 }
+
