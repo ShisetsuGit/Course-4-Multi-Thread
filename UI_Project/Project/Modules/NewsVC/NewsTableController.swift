@@ -25,7 +25,7 @@ class NewsTableController: UITableViewController {
                 switch changes {
                 case .initial:
                     print("INITIAL")
-                //                    print(changes)
+                    tableView.reloadData()
                 case .update:
                     tableView.reloadData()
                 case .error(let error):
@@ -42,7 +42,7 @@ class NewsTableController: UITableViewController {
                 switch changes {
                 case .initial:
                     print("INITIAL")
-                //                    print(changes)
+                    tableView.reloadData()
                 case .update:
                     tableView.reloadData()
                 case .error(let error):
@@ -86,6 +86,10 @@ class NewsTableController: UITableViewController {
             cell.profilePhoto.image = image
         }
         
+        UNIXTime(unixDate: newsData.date) { date in
+            cell.date.text = date
+        }
+        
         cell.profilePhoto.clipsToBounds = true
         cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height / 2
         
@@ -98,15 +102,20 @@ class NewsTableController: UITableViewController {
             cell.newsText.text = newsData.text
         }
         
-        cell.likesCount.text = "\(newsData.likes)"
-        cell.repostsCount.text = "\(newsData.reposts)"
-        cell.viewsCount.text = "\(newsData.views)"
-        cell.commensCount.text = "\(newsData.comments)"
-        
-        cell.selectionStyle = .none
+        formatCounts(Double(newsData.views)) { views in
+            cell.viewsCount.text = views
+        }
+        formatCounts(Double(newsData.likes)) { likes in
+            cell.likesCount.text = likes
+        }
+        formatCounts(Double(newsData.reposts)) { reposts in
+            cell.repostsCount.text = reposts
+        }
+        formatCounts(Double(newsData.comments)) { comments in
+            cell.commensCount.text = comments
+        }
         
         return cell
-        
     }
 }
 

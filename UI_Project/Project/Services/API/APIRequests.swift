@@ -127,13 +127,13 @@ final class APIRequest {
         }
     }
     
-    //    MARK: - GET NEWS (TYPE: Post)
+    //    MARK: - GET NEWS
     func getNews() {
         
         let method = "/newsfeed.get"
         let parameters: Parameters = [
             "filters": "post, photo",
-            "count": 50,
+            "count": 60,
             "access_token": token,
             "v": version]
         let url = baseUrl + method
@@ -144,15 +144,36 @@ final class APIRequest {
             print(response.request as Any)
             
             guard let data = response.data else { return }
-            guard let itemsNews = JSON(data).response.items.array else { return }
-            let news: [NewsModel] = itemsNews.map { NewsModel(data: $0) }
-            guard let itemsGroups = JSON(data).response.groups.array else { return }
-            let groups: [NewsGroupsModel] = itemsGroups.map { NewsGroupsModel(data: $0) }
-            DispatchQueue.main.async {
-                self.newsGroupsDB.add(newsGroups: groups)
-                self.newsDB.add(news: news)
+            
+            let itemsQueue = DispatchQueue(label: "ItemsParsing",
+                                           qos: .userInitiated,
+                                           attributes: .concurrent)
+            let groupsQueue = DispatchQueue(label: "GroupsParsing",
+                                           qos: .userInitiated,
+                                           attributes: .concurrent)
+            
+            itemsQueue.async {
+                print("1 Parsing items")
+                guard let itemsNews = JSON(data).response.items.array else { return }
+                let news: [NewsModel] = itemsNews.map { NewsModel(data: $0) }
+                print("news")
+                print(news)
+                DispatchQueue.main.async {
+                    print("1.1 Write items data to DB")
+                    self.newsDB.add(news: news)
+                }
             }
             
+            groupsQueue.async {
+                print("1 Parsing groups")
+                guard let itemsGroups = JSON(data).response.groups.array else { return }
+                let groups: [NewsGroupsModel] = itemsGroups.map { NewsGroupsModel(data: $0) }
+                DispatchQueue.main.async {
+                    print("1.1 Write groups data to DB")
+                    self.newsGroupsDB.add(newsGroups: groups)
+                }
+                
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ class NewsDatabaseService: NewsDatabaseServiceProtocol {
     }
     
     func readResults() -> Results<NewsModel>? {
-        let newsResults = self.realm.objects(NewsModel.self)
+        let newsResults = self.realm.objects(NewsModel.self).sorted(byKeyPath: "date", ascending: false)
         return newsResults
     }
     

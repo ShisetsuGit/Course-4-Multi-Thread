@@ -13,6 +13,7 @@ class NewsModel: Object {
 
     @objc dynamic var sourceId = 0
     @objc dynamic var postID = 0
+    @objc dynamic var date = 0
     @objc dynamic var text: String?
     @objc dynamic var userLikes = 0
     @objc dynamic var likes = 0
@@ -25,6 +26,7 @@ class NewsModel: Object {
         self.init()
         
         self.postID = data.post_id.int!
+        self.date = data.date.int!
         self.sourceId = data.source_id.int!
         if sourceId < 0 {
             self.sourceId.negate()
