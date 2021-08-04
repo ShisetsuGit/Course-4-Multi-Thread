@@ -171,6 +171,7 @@ class FriendsTableController: UITableViewController, UISearchBarDelegate {
                 } else if friends.online == 0 {
                     vc.userStatus = "Offline"
                 }
+                vc.userBio = friends.status
             } else {
                 let friends = friendsData![indexPath.row]
                 vc.userID = friends.id
@@ -184,6 +185,7 @@ class FriendsTableController: UITableViewController, UISearchBarDelegate {
                 } else if friends.online == 0 {
                     vc.userStatus = "Offline"
                 }
+                vc.userBio = friends.status
             }
         }
     }

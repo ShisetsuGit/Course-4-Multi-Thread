@@ -14,10 +14,9 @@ final class APIRequest {
     let baseUrl = "https://api.vk.com/method"
     let token = VKSession.currentSession.token
     let cliendId = VKSession.currentSession.userId
-    let version = "5.138"
+    let version = "5.131"
     
 //    MARK: - DB SERVICES
-    let userDB = UsersDatabaseService()
     let groupsDB = GroupsDatabaseService()
     let photosDB = PhotoDatabaseService()
     let newsGroupsDB = NewsGroupsDatabaseService()
@@ -25,6 +24,8 @@ final class APIRequest {
     
     //    MARK: - GET USER FRIENDS
     func getFriends() {
+        
+        let operation = OperationQueue()
         
         let method = "/friends.get"
         let parameters: Parameters = [
@@ -35,18 +36,19 @@ final class APIRequest {
             "v": version]
         let url = baseUrl + method
         
-        AF.request(url, method: .get, parameters: parameters).responseData { response in
-            
-            print(response.request as Any)
-            
-            guard let data = response.data else { return }
-            guard let items = JSON(data).response.items.array else { return }
-            let friends: [UserModel] = items.map { UserModel(data: $0) }
-            
-            DispatchQueue.main.async {
-                self.userDB.add(user: friends)
-            }
-        }
+        let request = AF.request(url, method: .get, parameters: parameters)
+        print(request as Any)
+        
+        let getDataOperation = GetDataOperation(request: request)
+        operation.addOperation(getDataOperation)
+        
+        let parseData = ParseData()
+        parseData.addDependency(getDataOperation)
+        operation.addOperation(parseData)
+        
+        let reloadTableController = LoadFrindsToRealm()
+        reloadTableController.addDependency(parseData)
+        OperationQueue.main.addOperation(reloadTableController)
     }
     
     //    MARK: - GET USER PHOTOS
@@ -69,8 +71,6 @@ final class APIRequest {
             
             guard let data = response.data else { return }
             guard let items = JSON(data).response.items.array else { return }
-            
-            print(items)
             
             let url: [PhotoModel] = items.map { PhotoModel(data: $0) }
             

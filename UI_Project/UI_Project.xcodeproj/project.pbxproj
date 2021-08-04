@@ -14,6 +14,10 @@
 		992ACC0926B3EB8C00507129 /* PostViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992ACC0826B3EB8C00507129 /* PostViewCell.swift */; };
 		992ACC0D26B82E3100507129 /* UNIXTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992ACC0C26B82E3100507129 /* UNIXTime.swift */; };
 		992ACC0F26B8849A00507129 /* CountToK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992ACC0E26B8849A00507129 /* CountToK.swift */; };
+		992ACC1226BA9ECC00507129 /* GetDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992ACC1126BA9ECC00507129 /* GetDataOperation.swift */; };
+		992ACC1426BA9F4F00507129 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992ACC1326BA9F4F00507129 /* AsyncOperation.swift */; };
+		992ACC1626BB0B0200507129 /* ParseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992ACC1526BB0B0200507129 /* ParseData.swift */; };
+		992ACC1826BB0BE100507129 /* LoadFrindsToRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992ACC1726BB0BE100507129 /* LoadFrindsToRealm.swift */; };
 		993EB98E26A06CAC004819C9 /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 993EB98D26A06CAC004819C9 /* NewsModel.swift */; };
 		993EB99026A080ED004819C9 /* NewsGroupsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 993EB98F26A080ED004819C9 /* NewsGroupsModel.swift */; };
 		993EB99226A0815F004819C9 /* NewsGroupsDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 993EB99126A0815F004819C9 /* NewsGroupsDatabaseService.swift */; };
@@ -69,6 +73,10 @@
 		992ACC0826B3EB8C00507129 /* PostViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewCell.swift; sourceTree = "<group>"; };
 		992ACC0C26B82E3100507129 /* UNIXTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNIXTime.swift; sourceTree = "<group>"; };
 		992ACC0E26B8849A00507129 /* CountToK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountToK.swift; sourceTree = "<group>"; };
+		992ACC1126BA9ECC00507129 /* GetDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDataOperation.swift; sourceTree = "<group>"; };
+		992ACC1326BA9F4F00507129 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		992ACC1526BB0B0200507129 /* ParseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseData.swift; sourceTree = "<group>"; };
+		992ACC1726BB0BE100507129 /* LoadFrindsToRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadFrindsToRealm.swift; sourceTree = "<group>"; };
 		993EB98D26A06CAC004819C9 /* NewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
 		993EB98F26A080ED004819C9 /* NewsGroupsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsGroupsModel.swift; sourceTree = "<group>"; };
 		993EB99126A0815F004819C9 /* NewsGroupsDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsGroupsDatabaseService.swift; sourceTree = "<group>"; };
@@ -161,11 +169,23 @@
 		9919951625C846AD00E1E729 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				992ACC1026BA9EAC00507129 /* Operation */,
 				99F05D77269459BA0073CC70 /* Auth */,
 				99F05D76269459B30073CC70 /* API */,
 				99F05D75269459AB0073CC70 /* DB */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		992ACC1026BA9EAC00507129 /* Operation */ = {
+			isa = PBXGroup;
+			children = (
+				992ACC1126BA9ECC00507129 /* GetDataOperation.swift */,
+				992ACC1326BA9F4F00507129 /* AsyncOperation.swift */,
+				992ACC1526BB0B0200507129 /* ParseData.swift */,
+				992ACC1726BB0BE100507129 /* LoadFrindsToRealm.swift */,
+			);
+			path = Operation;
 			sourceTree = "<group>";
 		};
 		998166E6258409D7001DA1E3 /* FriendsVC */ = {
@@ -504,6 +524,7 @@
 				99C45FCC2684627700071D9A /* Data+PrettyJSON.swift in Sources */,
 				993EB99026A080ED004819C9 /* NewsGroupsModel.swift in Sources */,
 				993EB99426A081D4004819C9 /* NewsGroupsDatabaseServiceProtocol.swift in Sources */,
+				992ACC1826BB0BE100507129 /* LoadFrindsToRealm.swift in Sources */,
 				993EB98E26A06CAC004819C9 /* NewsModel.swift in Sources */,
 				99C45FDC268B101200071D9A /* TabController.swift in Sources */,
 				995E491825988ED200C2864C /* AnimationController.swift in Sources */,
@@ -511,6 +532,7 @@
 				998167382584CD25001DA1E3 /* TableViewCellRecomendedGroups.swift in Sources */,
 				99FDD4C025783AB300EA39AB /* LoginController.swift in Sources */,
 				99102D1E258FF39D00F620BD /* ProfileController.swift in Sources */,
+				992ACC1226BA9ECC00507129 /* GetDataOperation.swift in Sources */,
 				99FDD4AA2578394900EA39AB /* AppDelegate.swift in Sources */,
 				9919951825C846D800E1E729 /* VKSession.swift in Sources */,
 				99448950267CDD40000BE17A /* WebAuthController.swift in Sources */,
@@ -521,10 +543,12 @@
 				9949D1FA259F6C2E00EF5DD4 /* FullScreenPhotoCell.swift in Sources */,
 				99F05D7B26945A050073CC70 /* GroupsDatabaseServiceProtocol.swift in Sources */,
 				99C45FD22684938800071D9A /* StringExtensions.swift in Sources */,
+				992ACC1626BB0B0200507129 /* ParseData.swift in Sources */,
 				99F05D7F2695DDE60073CC70 /* PhotoDatabaseService.swift in Sources */,
 				993EB99226A0815F004819C9 /* NewsGroupsDatabaseService.swift in Sources */,
 				9981673B2584CD25001DA1E3 /* TableViewControllerRecomendGroups.swift in Sources */,
 				995BFDDC259CE5CA0099FF45 /* DotController.swift in Sources */,
+				992ACC1426BA9F4F00507129 /* AsyncOperation.swift in Sources */,
 				998166F72584B5C8001DA1E3 /* CollectionViewController.swift in Sources */,
 				99E44C6426930725005D3586 /* UserModel.swift in Sources */,
 				99FDD4AC2578394900EA39AB /* SceneDelegate.swift in Sources */,
