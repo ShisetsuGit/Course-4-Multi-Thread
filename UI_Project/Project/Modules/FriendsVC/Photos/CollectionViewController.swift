@@ -18,7 +18,6 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
                 switch changes {
                 case .initial:
                     print("INITIAL")
-                    print(changes)
                 case .update:
                     collectionView.reloadData()
                 case .error(let error):

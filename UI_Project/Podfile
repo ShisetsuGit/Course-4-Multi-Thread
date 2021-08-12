@@ -17,4 +17,7 @@ target 'UI_Project' do
   pod 'Firebase/Database'
   pod 'Firebase/Firestore'
 
+  #Promise
+  pod 'PromiseKit'
+
 end
