@@ -29,8 +29,6 @@ class PhotoDatabaseService: PhotoDatabaseServiceProtocol {
     
     func read(userID: String) -> [PhotoModel] {
         let photos = self.realm.objects(PhotoModel.self).filter("id = '\(userID)'")
-        print("DB Photos")
-        print(photos)
         return Array(photos)
     }
     

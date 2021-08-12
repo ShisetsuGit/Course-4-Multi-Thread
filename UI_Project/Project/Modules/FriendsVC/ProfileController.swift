@@ -7,10 +7,13 @@
 
 import UIKit
 import RealmSwift
+import DynamicJSON
+import PromiseKit
 
 class ProfileController: UIViewController {
     
     let photoRequest = APIRequest()
+    let photosDB = PhotoDatabaseService()
     
     var userPhoto = String()
     var photoArray: Results<PhotoModel>?
@@ -35,8 +38,18 @@ class ProfileController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        photoRequest.getPhoto(userID: userID)
-        photoArray = DB.readResults(userID: userID)
+        
+        firstly {
+            self.photoRequest.getPhoto(userID: userID)
+        }.then { (data) in
+            self.photoRequest.photoPromiseParser(data)
+        }.done(on: .main) { (items) in
+            let url: [PhotoModel] = items.map { PhotoModel(data: $0) }
+            self.photosDB.add(photos: url)
+            self.photoArray = self.DB.readResults(userID: self.userID)
+        }.catch { (error) in
+            print(error.localizedDescription)
+        }
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         

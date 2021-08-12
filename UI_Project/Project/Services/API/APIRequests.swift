@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 import DynamicJSON
+import PromiseKit
 
 final class APIRequest {
     
@@ -52,7 +53,7 @@ final class APIRequest {
     }
     
     //    MARK: - GET USER PHOTOS
-    func getPhoto(userID: String) {
+    func getPhoto(userID: String) -> Promise<Data> {
         
         let method = "/photos.getAll"
         let parameters: Parameters = [
@@ -65,21 +66,29 @@ final class APIRequest {
             "v": version]
         let url = baseUrl + method
         
-        AF.request(url, method: .get, parameters: parameters).responseData { response in
-            
-            print(response.request as Any)
-            
-            guard let data = response.data else { return }
-            guard let items = JSON(data).response.items.array else { return }
-            
-            let url: [PhotoModel] = items.map { PhotoModel(data: $0) }
-            
-            DispatchQueue.main.async {
-                self.photosDB.add(photos: url)
+        let promise = Promise<Data> { resolver in
+            AF.request(url, method: .get, parameters: parameters).responseData{ response in
+                print(response.request as Any)
+                guard let data = response.data else { return }
+                resolver.fulfill(data)
             }
         }
+        return promise
     }
     
+    func photoPromiseParser(_ data: Data) -> Promise<Array<JSON>> {
+            let promise = Promise<Array<JSON>> { resolver in
+                do {
+                    guard let items = try JSON(data: data).response.items.array else { return }
+                    resolver.fulfill(items)
+                } catch {
+                    print(error.localizedDescription)
+                    resolver.reject(error)
+                }
+            }
+            return promise
+        }
+ 
     //    MARK: - GET USER GROUPS
     func getGroups() {
         
