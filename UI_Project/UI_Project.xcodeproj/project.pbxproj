@@ -10,6 +10,10 @@
 		10381C5F2B2CF5A8F1CF861F /* Pods_UI_Project.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8F679815C7766B435633ECD /* Pods_UI_Project.framework */; };
 		99102D1E258FF39D00F620BD /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99102D1D258FF39D00F620BD /* ProfileController.swift */; };
 		99102D282591FFBE00F620BD /* NewsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99102D272591FFBE00F620BD /* NewsTableController.swift */; };
+		9910D70526CBEE150062BE24 /* PhotoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9910D70426CBEE150062BE24 /* PhotoViewCell.swift */; };
+		9910D70726CC5E690062BE24 /* ScaledHeightImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9910D70626CC5E690062BE24 /* ScaledHeightImageView.swift */; };
+		9912757526C9275700E93515 /* SearchHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9912757426C9275700E93515 /* SearchHeader.swift */; };
+		9912757926C92DDF00E93515 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9912757826C92DDF00E93515 /* Animation.swift */; };
 		9919951825C846D800E1E729 /* VKSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9919951725C846D700E1E729 /* VKSession.swift */; };
 		992ACC0926B3EB8C00507129 /* PostViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992ACC0826B3EB8C00507129 /* PostViewCell.swift */; };
 		992ACC0D26B82E3100507129 /* UNIXTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992ACC0C26B82E3100507129 /* UNIXTime.swift */; };
@@ -69,6 +73,10 @@
 		1574DEE81AA5471A70DB5676 /* Pods-UI_Project.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UI_Project.debug.xcconfig"; path = "Target Support Files/Pods-UI_Project/Pods-UI_Project.debug.xcconfig"; sourceTree = "<group>"; };
 		99102D1D258FF39D00F620BD /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		99102D272591FFBE00F620BD /* NewsTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableController.swift; sourceTree = "<group>"; };
+		9910D70426CBEE150062BE24 /* PhotoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCell.swift; sourceTree = "<group>"; };
+		9910D70626CC5E690062BE24 /* ScaledHeightImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledHeightImageView.swift; sourceTree = "<group>"; };
+		9912757426C9275700E93515 /* SearchHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeader.swift; sourceTree = "<group>"; };
+		9912757826C92DDF00E93515 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		9919951725C846D700E1E729 /* VKSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSession.swift; sourceTree = "<group>"; };
 		992ACC0826B3EB8C00507129 /* PostViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewCell.swift; sourceTree = "<group>"; };
 		992ACC0C26B82E3100507129 /* UNIXTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNIXTime.swift; sourceTree = "<group>"; };
@@ -162,8 +170,20 @@
 			children = (
 				99102D272591FFBE00F620BD /* NewsTableController.swift */,
 				992ACC0826B3EB8C00507129 /* PostViewCell.swift */,
+				9910D70426CBEE150062BE24 /* PhotoViewCell.swift */,
+				9910D70626CC5E690062BE24 /* ScaledHeightImageView.swift */,
 			);
 			path = NewsVC;
+			sourceTree = "<group>";
+		};
+		9912757A26C9359B00E93515 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				9912757826C92DDF00E93515 /* Animation.swift */,
+				9912757426C9275700E93515 /* SearchHeader.swift */,
+				998166EF2584B3A7001DA1E3 /* TableViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		9919951625C846AD00E1E729 /* Services */ = {
@@ -192,8 +212,8 @@
 			isa = PBXGroup;
 			children = (
 				998166F52584B59C001DA1E3 /* Photos */,
+				9912757A26C9359B00E93515 /* Cell */,
 				998166EA25840B59001DA1E3 /* FriendsTableController.swift */,
-				998166EF2584B3A7001DA1E3 /* TableViewCell.swift */,
 				99102D1D258FF39D00F620BD /* ProfileController.swift */,
 			);
 			path = FriendsVC;
@@ -514,6 +534,7 @@
 			files = (
 				992ACC0D26B82E3100507129 /* UNIXTime.swift in Sources */,
 				992ACC0926B3EB8C00507129 /* PostViewCell.swift in Sources */,
+				9912757526C9275700E93515 /* SearchHeader.swift in Sources */,
 				99F05D812695DE3F0073CC70 /* PhotoDatabaseServiceProtocol.swift in Sources */,
 				99E44C682693180C005D3586 /* UsersDatabaseService.swift in Sources */,
 				99F05D712694561C0073CC70 /* GroupsModel.swift in Sources */,
@@ -549,16 +570,19 @@
 				9981673B2584CD25001DA1E3 /* TableViewControllerRecomendGroups.swift in Sources */,
 				995BFDDC259CE5CA0099FF45 /* DotController.swift in Sources */,
 				992ACC1426BA9F4F00507129 /* AsyncOperation.swift in Sources */,
+				9910D70526CBEE150062BE24 /* PhotoViewCell.swift in Sources */,
 				998166F72584B5C8001DA1E3 /* CollectionViewController.swift in Sources */,
 				99E44C6426930725005D3586 /* UserModel.swift in Sources */,
 				99FDD4AC2578394900EA39AB /* SceneDelegate.swift in Sources */,
 				99102D282591FFBE00F620BD /* NewsTableController.swift in Sources */,
 				993EB99626A08320004819C9 /* NewsDatabaseService.swift in Sources */,
 				99975AEC25A32BA000E11042 /* CustomNavigationController.swift in Sources */,
+				9910D70726CC5E690062BE24 /* ScaledHeightImageView.swift in Sources */,
 				9981674325852279001DA1E3 /* LikeButton.swift in Sources */,
 				992ACC0F26B8849A00507129 /* CountToK.swift in Sources */,
 				998166EB25840B59001DA1E3 /* FriendsTableController.swift in Sources */,
 				99F05D742694595B0073CC70 /* UserDatabaseServiceProtocol.swift in Sources */,
+				9912757926C92DDF00E93515 /* Animation.swift in Sources */,
 				993EB99826A08359004819C9 /* NewsDatabaseServiceProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
