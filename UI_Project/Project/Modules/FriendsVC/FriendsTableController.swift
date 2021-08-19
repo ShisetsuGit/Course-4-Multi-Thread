@@ -30,7 +30,6 @@ class FriendsTableController: UITableViewController, UISearchBarDelegate {
                 switch changes {
                 case .initial:
                     print("INITIAL")
-//                    print(changes)
                 case .update:
                     tableView.reloadData()
                 case .error(let error):
@@ -69,20 +68,9 @@ class FriendsTableController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let returnedView = UIView(frame: CGRect(x: 30, y: 20, width: 42, height: 42))
-        returnedView.backgroundColor = UIColor.lightGray
-        returnedView.alpha = 0.5
+        let headerView = SearchHeader().headerView
         
-        let label = UILabel(frame: CGRect(x: 4, y: 4, width: 160, height: 20))
-        label.textColor = .black
-        if searchBarStatus {
-            label.text = "Результат поиска"
-        } else {
-            label.text = "Список друзей"
-        }
-        returnedView.addSubview(label)
-        
-        return returnedView
+        return headerView
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -110,47 +98,28 @@ class FriendsTableController: UITableViewController, UISearchBarDelegate {
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         guard let viewAvatar = tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
         
-        let spring = CASpringAnimation(keyPath: "transform.scale")
-        spring.duration = 0.5
-        spring.damping = 0.1
-        spring.initialVelocity = 0.1
-        spring.fromValue = 1
-        spring.toValue = 0.9
-        
-        let animation = CAAnimationGroup()
-        animation.duration = 1
-        animation.animations = [spring]
-        
-        viewAvatar.headerView.layer.add(animation, forKey: "spring")
+        viewAvatar.avatarBackground.layer.add(Animation().friendAnimationGroup, forKey: "spring")
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "userFriends", for: indexPath) as! TableViewCell
         
-        
         if searchBarStatus {
             let friends = filteredData[indexPath.row]
-            cell.friendLabel.text = friends.firstName! + " " + friends.lastName!
+            cell.friendsName.text = friends.firstName! + " " + friends.lastName!
             
             imageCache(url: friends.photo50!) { image in
-                cell.friendPhoto.image = image
+                cell.avatarImage.image = image
             }
         } else {
             let friends = friendsData![indexPath.row]
-            cell.friendLabel.text = friends.firstName! + " " + friends.lastName!
-            
+            cell.friendsName.text = friends.firstName! + " " + friends.lastName!
+
             imageCache(url: friends.photo50!) { image in
-                cell.friendPhoto.image = image
+                cell.avatarImage.image = image
             }
         }
-        
-        cell.friendPhoto.clipsToBounds = true
-        cell.friendPhoto.layer.cornerRadius = cell.friendPhoto.frame.height / 2
-        cell.headerView.addSubview(cell.friendPhoto)
-        
-        cell.addSubview(cell.headerView)
-        
         return cell
     }
     

@@ -1,43 +1,22 @@
 //
-//  PostViewCell.swift
+//  PhotoViewCell.swift
 //  UI_Project
 //
-//  Created by Shisetsu on 30.07.2021.
+//  Created by Shisetsu on 17.08.2021.
 //
 
 import UIKit
 
-class PostViewCell: UITableViewCell {
+class PhotoViewCell: UITableViewCell {
     
     let screenSize: CGRect = UIScreen.main.bounds
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        newsLabelFrame()
-        setCountsPosition()
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        selectionStyle = .none
-    }
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupView()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupView()
-    }
-
     lazy var profilePhoto: UIImageView = {
-        let avatarImage = UIImageView(frame: CGRect(x: 5, y: 6,
+        let avatarImage = UIImageView(frame: CGRect(x: 5, y: 5,
                                                     width: 50,
                                                     height: 50))
         avatarImage.clipsToBounds = true
@@ -77,28 +56,27 @@ class PostViewCell: UITableViewCell {
         return newsPhoto
     }()
     
-    lazy var newsText: UILabel = {
-        let newsText = UILabel()
-        return newsText
-    }()
-    
-    lazy var countsPostView: UIView = {
-        let countsView = UIView()
-        return countsView
+    lazy var countsPhotoView: UIView = {
+        let screenWidth = screenSize.width
+        countsPhotoView = UIView(frame: CGRect(x: 5,
+                                               y: 5 + profileName.frame.height + date.frame.height + newsPhoto.frame.height + 5,
+                                               width: screenWidth - 11,
+                                               height: 50))
+        return countsPhotoView
     }()
     
     lazy var likesImage: UIImageView = {
-        let likesImage = UIImageView(frame: CGRect(x: countsPostView.frame.minX + 10, y: countsPostView.frame.minY + 12,
-                                               width: 33,
-                                               height: 27))
+        let likesImage = UIImageView(frame: CGRect(x: countsPhotoView.frame.minX,
+                                                   y: countsPhotoView.frame.height - 38,
+                                                   width: 33,
+                                                   height: 27))
         likesImage.image = UIImage(systemName: "heart")
         likesImage.tintColor = UIColor(red: 169/255, green: 175/255, blue: 186/255, alpha: 1.0)
         return likesImage
     }()
     
-    
     lazy var likesCount: UILabel = {
-        let likesCount = UILabel(frame: CGRect(x: likesImage.frame.maxX + 5, y: countsPostView.frame.minY + 13,
+        let likesCount = UILabel(frame: CGRect(x: likesImage.frame.maxX + 5, y: countsPhotoView.frame.height - 38,
                                                width: 50,
                                                height: 25))
         likesCount.textColor = UIColor(red: 98/255, green: 109/255, blue: 122/255, alpha: 1.0)
@@ -106,7 +84,7 @@ class PostViewCell: UITableViewCell {
     }()
     
     lazy var commentsImage: UIImageView = {
-        let commentsImage = UIImageView(frame: CGRect(x: likesCount.frame.maxX + 5, y: countsPostView.frame.minY + 12,
+        let commentsImage = UIImageView(frame: CGRect(x: likesCount.frame.maxX + 5, y: countsPhotoView.frame.height - 38,
                                                width: 33,
                                                height: 27))
         commentsImage.image = UIImage(systemName: "message")
@@ -116,7 +94,7 @@ class PostViewCell: UITableViewCell {
     
 
     lazy var commentsCount: UILabel = {
-        let commentsCount = UILabel(frame: CGRect(x: commentsImage.frame.maxX + 5, y: countsPostView.frame.minY + 13,
+        let commentsCount = UILabel(frame: CGRect(x: commentsImage.frame.maxX + 5, y: countsPhotoView.frame.height - 38,
                                                width: 50,
                                                height: 25))
         commentsCount.textColor = UIColor(red: 98/255, green: 109/255, blue: 122/255, alpha: 1.0)
@@ -124,7 +102,7 @@ class PostViewCell: UITableViewCell {
     }()
     
     lazy var repostsImage: UIImageView = {
-        let repostsImage = UIImageView(frame: CGRect(x: commentsCount.frame.maxX, y: countsPostView.frame.minY + 12,
+        let repostsImage = UIImageView(frame: CGRect(x: commentsCount.frame.maxX, y: countsPhotoView.frame.height - 38,
                                                width: 33,
                                                height: 27))
         repostsImage.image = UIImage(systemName: "arrowshape.turn.up.forward")
@@ -133,7 +111,7 @@ class PostViewCell: UITableViewCell {
     }()
 
     lazy var repostsCount: UILabel = {
-        let repostsCount = UILabel(frame: CGRect(x: repostsImage.frame.maxX + 5, y: countsPostView.frame.minY + 13,
+        let repostsCount = UILabel(frame: CGRect(x: repostsImage.frame.maxX + 5, y: countsPhotoView.frame.height - 38,
                                                width: 50,
                                                height: 25))
         repostsCount.textColor = UIColor(red: 98/255, green: 109/255, blue: 122/255, alpha: 1.0)
@@ -141,7 +119,7 @@ class PostViewCell: UITableViewCell {
     }()
     
     lazy var viewsCount: UILabel = {
-        let viewsCount = UILabel(frame: CGRect(x: countsPostView.frame.width + screenSize.width - 60, y: countsPostView.frame.minY + 13,
+        let viewsCount = UILabel(frame: CGRect(x: countsPhotoView.frame.maxX - 60, y: countsPhotoView.frame.height - 38,
                                                width: 50,
                                                height: 25))
         viewsCount.textColor = UIColor(red: 98/255, green: 109/255, blue: 122/255, alpha: 1.0)
@@ -149,7 +127,7 @@ class PostViewCell: UITableViewCell {
     }()
     
     lazy var viewsImage: UIImageView = {
-        let viewsImage = UIImageView(frame: CGRect(x: viewsCount.frame.minX - 25, y: countsPostView.frame.minY + 18,
+        let viewsImage = UIImageView(frame: CGRect(x: viewsCount.frame.minX - 25, y: countsPhotoView.frame.height - 32,
                                                width: 21,
                                                height: 15))
         viewsImage.image = UIImage(systemName: "eye")
@@ -157,58 +135,70 @@ class PostViewCell: UITableViewCell {
         return viewsImage
     }()
     
-    func getLabelSize(text: String, font: UIFont) -> CGSize {
-        let screenWidth = screenSize.width
-        let maxWidth = bounds.width + 10
-        let textBlock = CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude)
-        let rect = text.boundingRect(with: textBlock, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
-        let height = Double(rect.size.height)
-        let size = CGSize(width: ceil(Double(screenWidth - 10)), height: ceil(height))
-        
-        return size
+//    lazy var likesCount: UILabel = {
+//        let likesCount = UILabel(frame: CGRect(x: countsPhotoView.frame.minX + 10,
+//                                               y: countsPhotoView.frame.height - 38,
+//                                               width: 50,
+//                                               height: 25))
+//        return likesCount
+//    }()
+//
+//    lazy var commentsCount: UILabel = {
+//        let commentsCount = UILabel(frame: CGRect(x: countsPhotoView.frame.minX + 70,
+//                                                  y: countsPhotoView.frame.height - 38,
+//                                                  width: 50,
+//                                                  height: 25))
+//        return commentsCount
+//    }()
+//
+//    lazy var repostsCount: UILabel = {
+//        let repostsCount = UILabel(frame: CGRect(x: countsPhotoView.frame.minX + 130,
+//                                                 y: countsPhotoView.frame.height - 38,
+//                                                 width: 50,
+//                                                 height: 25))
+//        return repostsCount
+//    }()
+//
+//    lazy var viewsCount: UILabel = {
+//        let viewsCount = UILabel(frame: CGRect(x: countsPhotoView.frame.maxX - 60,
+//                                               y: countsPhotoView.frame.height - 38,
+//                                               width: 50,
+//                                               height: 25))
+//        return viewsCount
+//    }()
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
     }
     
-    func setCountsPosition() {
-        let screenWidth = screenSize.width
-        let newsLabelSize = getLabelSize(text: newsText.text!, font: newsText.font)
-        countsPostView.frame = CGRect(x: 5,
-                                  y: date.frame.maxY + newsPhoto.frame.maxY + 5 + newsLabelSize.height - 45,
-                                  width: screenWidth - 11,
-                                  height: 50)
-        countsPostView.layer.cornerRadius = countsPostView.frame.height / 2
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        selectionStyle = .none
     }
     
-    func newsLabelFrame() {
-        let newsLabelSize = getLabelSize(text: newsText.text!, font: newsText.font)
-        let newsLabelOrigin =  CGPoint(x: 5, y: newsPhoto.frame.maxY + 5)
-        newsText.frame = CGRect(origin: newsLabelOrigin, size: newsLabelSize)
-        newsText.textAlignment = .left
-        newsText.lineBreakMode = .byWordWrapping
-        newsText.numberOfLines = 30
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupView()
     }
     
-    func setNews(text: String) {
-        newsText.text = text
-        newsLabelFrame()
-        setCountsPosition()
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
     }
     
     private func setupView() {
         addSubview(profilePhoto)
         addSubview(profileName)
         addSubview(newsPhoto)
-        addSubview(newsText)
         addSubview(date)
-        addSubview(countsPostView)
-        countsPostView.addSubview(likesCount)
-        countsPostView.addSubview(likesImage)
-        countsPostView.addSubview(commentsCount)
-        countsPostView.addSubview(commentsImage)
-        countsPostView.addSubview(repostsCount)
-        countsPostView.addSubview(repostsImage)
-        countsPostView.addSubview(viewsCount)
-        countsPostView.addSubview(viewsImage)
+        addSubview(countsPhotoView)
+        countsPhotoView.addSubview(likesCount)
+        countsPhotoView.addSubview(likesImage)
+        countsPhotoView.addSubview(commentsCount)
+        countsPhotoView.addSubview(commentsImage)
+        countsPhotoView.addSubview(repostsCount)
+        countsPhotoView.addSubview(repostsImage)
+        countsPhotoView.addSubview(viewsCount)
+        countsPhotoView.addSubview(viewsImage)
     }
-       
-
 }
