@@ -137,22 +137,27 @@ final class APIRequest {
     }
     
     //    MARK: - GET NEWS
-    func getNews() {
+    func getNews(startFrom: String = "", startTime: Double? = nil, completion: @escaping (String) -> Void) {
         
         let method = "/newsfeed.get"
-        let parameters: Parameters = [
-            "filters": "post, photo",
-            "count": 60,
+        var parameters: Parameters = [
+            "filters": "post",
+            "count": 10,
+            "start_from": startFrom,
             "access_token": token,
             "v": version]
         let url = baseUrl + method
         
+        if let startTime = startTime {
+            parameters["start_time"] = startTime
+        }
         
         AF.request(url, method: .get, parameters: parameters).responseData { response in
             
             print(response.request as Any)
             
             guard let data = response.data else { return }
+            let nextFrom = JSON(data).response.next_from.string
             
             let itemsQueue = DispatchQueue(label: "ItemsParsing",
                                            qos: .userInitiated,
@@ -181,7 +186,9 @@ final class APIRequest {
                     print("1.1 Write groups data to DB")
                     self.newsGroupsDB.add(newsGroups: groups)
                 }
-                
+            }
+            if let nextFrom = nextFrom {
+                completion(nextFrom)
             }
         }
     }

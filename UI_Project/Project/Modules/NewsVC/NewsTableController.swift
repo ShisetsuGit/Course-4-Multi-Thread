@@ -16,7 +16,9 @@ class NewsTableController: UITableViewController {
     var newsToken: NotificationToken?
     var newsGroupsToken: NotificationToken?
     let screenSize: CGRect = UIScreen.main.bounds
-    var rowHeight = CGFloat()
+    
+    var nextFrom = ""
+    var isLoading = false
     
     var groups = [NewsGroupsModel]()
     
@@ -55,10 +57,19 @@ class NewsTableController: UITableViewController {
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.prefetchDataSource = self
+        news = newsDB.readResults()
+        newsGroups = newsGroupsDB.readResults()
+        setupRefreshControl()
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let newsData = news![indexPath.row]
+        var rowHeight = CGFloat()
         if newsData.text != "" {
-            rowHeight = 1200
+            rowHeight = 610
         } else if newsData.text == "" {
             rowHeight = 400
         }
@@ -66,13 +77,24 @@ class NewsTableController: UITableViewController {
         return rowHeight
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        newsRequest.getNews()
-        news = newsDB.readResults()
-        newsGroups = newsGroupsDB.readResults()
+    fileprivate func setupRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl?.attributedTitle = NSAttributedString(string: "Загрузка новостей...")
+        refreshControl?.tintColor = .lightGray
+        refreshControl?.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
     }
     
+    @objc func refreshNews() {
+        self.refreshControl?.beginRefreshing()
+
+        let mostFreshNewsDate = self.news?[0].date ?? Int(Date().timeIntervalSince1970)
+        
+        newsRequest.getNews(startTime: Double(mostFreshNewsDate + 1)) { [weak self] next in
+            guard let self = self else { return }
+            self.nextFrom = next
+        }
+        self.refreshControl?.endRefreshing()
+    }
    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return news!.count
@@ -85,6 +107,7 @@ class NewsTableController: UITableViewController {
         groups = self.newsGroupsDB.readById(id: newsData.sourceId)
         
         var cell = UITableViewCell()
+        
         
         if newsData.text != "" {
             
@@ -100,8 +123,10 @@ class NewsTableController: UITableViewController {
             imageCache(url: newsData.photo!) { image in
                 cell1.newsPhoto.image = image
             }
-            PostViewCell().setNews(text: newsData.text!)
+            
+            cell1.setNews(text: newsData.text!)
             cell1.newsText.text = newsData.text
+            
             formatCounts(Double(newsData.views)) { views in
                 cell1.viewsCount.text = views
             }
@@ -150,3 +175,15 @@ class NewsTableController: UITableViewController {
     }
 }
 
+extension NewsTableController: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        guard let maxRow = indexPaths.map({ $0.row }).max() else { return }
+        if maxRow > news!.count - 3, !isLoading {
+            isLoading = true
+            newsRequest.getNews(startFrom: nextFrom) { [weak self] (nextFrom) in
+                guard let self = self else { return }
+                self.isLoading = false
+            }
+        }
+    }
+}
