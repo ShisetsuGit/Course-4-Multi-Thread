@@ -104,7 +104,6 @@ class NewsTableController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let newsData = news![indexPath.row]
-        groups = self.newsGroupsDB.readById(id: newsData.sourceId)
         
         var cell = UITableViewCell()
         
@@ -112,33 +111,8 @@ class NewsTableController: UITableViewController {
         if newsData.text != "" {
             
             let cell1 = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! PostViewCell
-
-            cell1.profileName.text = groups[0].name
-            imageCache(url: groups[0].photo50!) { image in
-                cell1.profilePhoto.image = image
-            }
-            UNIXTime(unixDate: newsData.date) { date in
-                cell1.date.text = date
-            }
-            imageCache(url: newsData.photo!) { image in
-                cell1.newsPhoto.image = image
-            }
             
-            cell1.setNews(text: newsData.text!)
-            cell1.newsText.text = newsData.text
-            
-            formatCounts(Double(newsData.views)) { views in
-                cell1.viewsCount.text = views
-            }
-            formatCounts(Double(newsData.likes)) { likes in
-                cell1.likesCount.text = likes
-            }
-            formatCounts(Double(newsData.reposts)) { reposts in
-                cell1.repostsCount.text = reposts
-            }
-            formatCounts(Double(newsData.comments)) { comments in
-                cell1.commentsCount.text = comments
-            }
+            cell1.configurePostCell(newsData: newsData)
 
             cell = cell1
 
@@ -146,28 +120,7 @@ class NewsTableController: UITableViewController {
 
             let cell2 = tableView.dequeueReusableCell(withIdentifier: "photoCell", for: indexPath) as! PhotoViewCell
             
-            cell2.profileName.text = groups[0].name
-            imageCache(url: groups[0].photo50!) { image in
-                cell2.profilePhoto.image = image
-            }
-            UNIXTime(unixDate: newsData.date) { date in
-                cell2.date.text = date
-            }
-            imageCache(url: newsData.photo!) { image in
-                cell2.newsPhoto.image = image
-            }
-            formatCounts(Double(newsData.views)) { views in
-                cell2.viewsCount.text = views
-            }
-            formatCounts(Double(newsData.likes)) { likes in
-                cell2.likesCount.text = likes
-            }
-            formatCounts(Double(newsData.reposts)) { reposts in
-                cell2.repostsCount.text = reposts
-            }
-            formatCounts(Double(newsData.comments)) { comments in
-                cell2.commentsCount.text = comments
-            }
+            cell2.configurePhotoCell(newsData: newsData)
             
             cell = cell2
         }

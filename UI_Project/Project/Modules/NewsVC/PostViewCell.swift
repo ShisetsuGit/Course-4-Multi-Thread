@@ -5,15 +5,51 @@
 //  Created by Shisetsu on 30.07.2021.
 //
 import UIKit
+import RealmSwift
 
 class PostViewCell: UITableViewCell {
     
     let screenSize: CGRect = UIScreen.main.bounds
+    var groups = [NewsGroupsModel]()
+    let newsGroupsDB = NewsGroupsDatabaseService()
     
     override func layoutSubviews() {
         super.layoutSubviews()
         newsLabelFrame()
         setCountsPosition()
+    }
+    
+    //MARK: CELL CONFUGIRATION
+    
+    func configurePostCell(newsData: NewsModel) {
+        groups = self.newsGroupsDB.readById(id: newsData.sourceId)
+        profileName.text = groups[0].name
+        
+        imageCache(url: groups[0].photo50!) { [weak self] image in
+            self?.profilePhoto.image = image
+        }
+        UNIXTime(unixDate: newsData.date) { [weak self] date in
+            self?.date.text = date
+        }
+        imageCache(url: newsData.photo!) { [weak self] image in
+            self?.newsPhoto.image = image
+        }
+        
+        setNews(text: newsData.text!)
+        newsText.text = newsData.text
+        
+        formatCounts(Double(newsData.views)) { [weak self] views in
+            self?.viewsCount.text = views
+        }
+        formatCounts(Double(newsData.likes)) { [weak self] likes in
+            self?.likesCount.text = likes
+        }
+        formatCounts(Double(newsData.reposts)) { [weak self] reposts in
+            self?.repostsCount.text = reposts
+        }
+        formatCounts(Double(newsData.comments)) { [weak self] comments in
+            self?.commentsCount.text = comments
+        }
     }
     
     override func awakeFromNib() {
@@ -34,6 +70,12 @@ class PostViewCell: UITableViewCell {
         super.init(coder: aDecoder)
         setupView()
     }
+    
+    //MARK: START
+    //
+    //
+    //
+    //MARK: Set Positions
 
     lazy var profilePhoto: UIImageView = {
         let avatarImage = UIImageView(frame: CGRect(x: 5, y: 6,
@@ -185,6 +227,8 @@ class PostViewCell: UITableViewCell {
         newsText.lineBreakMode = .byTruncatingTail
         newsText.numberOfLines = 30
     }
+    
+    //MARK: STOP
     
     func setNews(text: String) {
         newsText.text = text

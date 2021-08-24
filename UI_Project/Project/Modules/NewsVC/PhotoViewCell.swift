@@ -6,14 +6,52 @@
 //
 
 import UIKit
+import RealmSwift
 
 class PhotoViewCell: UITableViewCell {
     
     let screenSize: CGRect = UIScreen.main.bounds
+    var groups = [NewsGroupsModel]()
+    let newsGroupsDB = NewsGroupsDatabaseService()
     
     override func layoutSubviews() {
         super.layoutSubviews()
     }
+    
+    //MARK: CELL CONFUGIRATION
+    
+    func configurePhotoCell(newsData: NewsModel) {
+        groups = self.newsGroupsDB.readById(id: newsData.sourceId)
+        
+        profileName.text = groups[0].name
+        imageCache(url: groups[0].photo50!) { [weak self] image in
+            self?.profilePhoto.image = image
+        }
+        UNIXTime(unixDate: newsData.date) { [weak self] date in
+            self?.date.text = date
+        }
+        imageCache(url: newsData.photo!) { [weak self] image in
+            self?.newsPhoto.image = image
+        }
+        formatCounts(Double(newsData.views)) { [weak self] views in
+            self?.viewsCount.text = views
+        }
+        formatCounts(Double(newsData.likes)) { [weak self] likes in
+            self?.likesCount.text = likes
+        }
+        formatCounts(Double(newsData.reposts)) { [weak self] reposts in
+            self?.repostsCount.text = reposts
+        }
+        formatCounts(Double(newsData.comments)) { [weak self] comments in
+            self?.commentsCount.text = comments
+        }
+    }
+    
+    //MARK: START
+    //
+    //
+    //
+    //MARK: Set Positions
     
     lazy var profilePhoto: UIImageView = {
         let avatarImage = UIImageView(frame: CGRect(x: 5, y: 5,
@@ -135,38 +173,6 @@ class PhotoViewCell: UITableViewCell {
         return viewsImage
     }()
     
-//    lazy var likesCount: UILabel = {
-//        let likesCount = UILabel(frame: CGRect(x: countsPhotoView.frame.minX + 10,
-//                                               y: countsPhotoView.frame.height - 38,
-//                                               width: 50,
-//                                               height: 25))
-//        return likesCount
-//    }()
-//
-//    lazy var commentsCount: UILabel = {
-//        let commentsCount = UILabel(frame: CGRect(x: countsPhotoView.frame.minX + 70,
-//                                                  y: countsPhotoView.frame.height - 38,
-//                                                  width: 50,
-//                                                  height: 25))
-//        return commentsCount
-//    }()
-//
-//    lazy var repostsCount: UILabel = {
-//        let repostsCount = UILabel(frame: CGRect(x: countsPhotoView.frame.minX + 130,
-//                                                 y: countsPhotoView.frame.height - 38,
-//                                                 width: 50,
-//                                                 height: 25))
-//        return repostsCount
-//    }()
-//
-//    lazy var viewsCount: UILabel = {
-//        let viewsCount = UILabel(frame: CGRect(x: countsPhotoView.frame.maxX - 60,
-//                                               y: countsPhotoView.frame.height - 38,
-//                                               width: 50,
-//                                               height: 25))
-//        return viewsCount
-//    }()
-    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -185,6 +191,8 @@ class PhotoViewCell: UITableViewCell {
         super.init(coder: aDecoder)
         setupView()
     }
+    
+    //MARK: STOP
     
     private func setupView() {
         addSubview(profilePhoto)
