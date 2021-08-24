@@ -169,8 +169,8 @@
 			isa = PBXGroup;
 			children = (
 				99102D272591FFBE00F620BD /* NewsTableController.swift */,
-				992ACC0826B3EB8C00507129 /* PostViewCell.swift */,
 				9910D70426CBEE150062BE24 /* PhotoViewCell.swift */,
+				992ACC0826B3EB8C00507129 /* PostViewCell.swift */,
 				9910D70626CC5E690062BE24 /* ScaledHeightImageView.swift */,
 			);
 			path = NewsVC;
@@ -742,7 +742,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Home.UI-Project";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -763,7 +763,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Home.UI-Project";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
