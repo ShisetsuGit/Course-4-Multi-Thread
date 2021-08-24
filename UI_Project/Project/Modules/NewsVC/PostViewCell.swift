@@ -4,7 +4,6 @@
 //
 //  Created by Shisetsu on 30.07.2021.
 //
-
 import UIKit
 
 class PostViewCell: UITableViewCell {
@@ -160,7 +159,7 @@ class PostViewCell: UITableViewCell {
     func getLabelSize(text: String, font: UIFont) -> CGSize {
         let screenWidth = screenSize.width
         let maxWidth = bounds.width + 10
-        let textBlock = CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude)
+        let textBlock = CGSize(width: maxWidth, height: 200) //CGFloat.greatestFiniteMagnitude)
         let rect = text.boundingRect(with: textBlock, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
         let height = Double(rect.size.height)
         let size = CGSize(width: ceil(Double(screenWidth - 10)), height: ceil(height))
@@ -183,7 +182,7 @@ class PostViewCell: UITableViewCell {
         let newsLabelOrigin =  CGPoint(x: 5, y: newsPhoto.frame.maxY + 5)
         newsText.frame = CGRect(origin: newsLabelOrigin, size: newsLabelSize)
         newsText.textAlignment = .left
-        newsText.lineBreakMode = .byWordWrapping
+        newsText.lineBreakMode = .byTruncatingTail
         newsText.numberOfLines = 30
     }
     
